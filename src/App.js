@@ -5,24 +5,32 @@ class App extends Component {
   state = {
     contacts: [],
     name: "",
+    number: "",
   };
-  addContact = name => {
-    if (name === "")
+  addContact = contact => {
+    const {name, number} = contact;
+    if (name === "" || number === "")
       return;
-    const contact = {
+    const contactNew = {
       id: uuid(),
       name,
+      number,
     };
     this.setState(({contacts}) => ({
-      contacts: [...contacts, contact],
+      contacts: [...contacts, contactNew],
     }));
   };
   handleSubmit = event => {
     event.preventDefault();
-    this.addContact(this.state.name);
+    const contact = {
+      name: this.state.name,
+      number: this.state.number
+    }
+    this.addContact(contact);
   };
   handleChange = event => {
-    this.setState({name: event.target.value});
+    const {name, value} = event.target;
+    this.setState({[name]: value});
   };
 
   render() {
@@ -35,14 +43,16 @@ class App extends Component {
             <div><label htmlFor="name">Name</label></div>
             <div><input type="text" name="name" onChange={this.handleChange}/></div>
             <br/>
+            <div><input type="text" name="number" onChange={this.handleChange}/></div>
+            <br/>
             <button type="submit">Add contact</button>
           </form>
         </section>
         <section>
           <h2>Contacts</h2>
           <ul>
-            {contacts.length > 0 && contacts.map(({name, id}) => (
-              <li key={id}>{name}</li>
+            {contacts.length > 0 && contacts.map(({name, number, id}) => (
+              <li key={id}>{name}: {number}</li>
             ))}
           </ul>
         </section>
