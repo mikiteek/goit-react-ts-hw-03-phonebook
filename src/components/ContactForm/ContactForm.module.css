@@ -1,0 +1,17 @@
+.section-contacts {
+  margin-bottom: 20px;
+}
+
+.form-contacts {
+  padding: 15px;
+  width: 400px;
+  border: 1px #000 solid;
+}
+
+.form-element {
+  display: block;
+}
+
+.form-input {
+  margin-bottom: 15px;
+}
