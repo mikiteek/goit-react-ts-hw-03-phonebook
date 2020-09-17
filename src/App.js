@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import {v4 as uuid} from "uuid";
+import ContactForm from "./components/ContactForm/ContactForm";
+import SectionContacts from "./components/SectionContacts/SectionContacts";
+import Filter from "./components/Filter/Filter";
+import ContactList from "./components/ContactList/ContactList";
 
 class App extends Component {
   state = {
@@ -9,8 +13,6 @@ class App extends Component {
       {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
       {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
     ],
-    name: "",
-    number: "",
     filter: "",
   };
 
@@ -28,20 +30,6 @@ class App extends Component {
     }));
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const contact = {
-      name: this.state.name,
-      number: this.state.number
-    }
-    this.addContact(contact);
-  };
-
-  handleChange = event => {
-    const {name, value} = event.target;
-    this.setState({[name]: value});
-  };
-
   getVisibleContacts = () => {
     const {filter, contacts} = this.state;
     return contacts.filter(({name}) => name.toLowerCase().includes(filter.toLowerCase()));
@@ -53,31 +41,14 @@ class App extends Component {
   render() {
     const contacts = this.getVisibleContacts();
     return (
-      <>
-        <section>
-          <h2>Phonebook</h2>
-          <form onSubmit={this.handleSubmit}>
-            <div><label htmlFor="name">Name</label></div>
-            <div><input type="text" name="name" onChange={this.handleChange}/></div>
-            <br/>
-            <div><input type="text" name="number" onChange={this.handleChange}/></div>
-            <br/>
-            <button type="submit">Add contact</button>
-          </form>
-        </section>
-        <section>
-          <h2>Contacts</h2>
-          <label>Find contacts by name
-            <br/>
-            <input type="text" name="filter" onChange={this.changeFilter}/>
-          </label>
-          <ul>
-            {contacts.length > 0 && contacts.map(({name, number, id}) => (
-              <li key={id}>{name}: {number}</li>
-            ))}
-          </ul>
-        </section>
-      </>
+      <div>
+        <ContactForm onSubmit={this.addContact}/>
+        <SectionContacts title="Contacts">
+          <Filter onChangeFilter={this.changeFilter}/>
+          <ContactList contacts={contacts}/>
+        </SectionContacts>
+
+      </div>
     );
   }
 }
