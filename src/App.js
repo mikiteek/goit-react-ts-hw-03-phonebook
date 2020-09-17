@@ -20,6 +20,10 @@ class App extends Component {
     const {name, number} = contact;
     if (name === "" || number === "")
       return;
+    if (this.state.contacts.findIndex(contact => contact.name === name) !== -1) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
     const contactNew = {
       id: uuid(),
       name,
