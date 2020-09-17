@@ -41,6 +41,11 @@ class App extends Component {
   changeFilter = event => {
     this.setState({filter: event.target.value});
   }
+  deleteContact = idContact => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(({id}) => id !== idContact),
+    }));
+  };
 
   render() {
     const contacts = this.getVisibleContacts();
@@ -49,7 +54,7 @@ class App extends Component {
         <ContactForm onSubmit={this.addContact}/>
         <SectionContacts title="Contacts">
           <Filter onChangeFilter={this.changeFilter}/>
-          <ContactList contacts={contacts}/>
+          <ContactList contacts={contacts} onDeleteContact={this.deleteContact}/>
         </SectionContacts>
 
       </div>
