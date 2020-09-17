@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 
 class SectionContacts extends Component {
   render() {
@@ -9,6 +10,15 @@ class SectionContacts extends Component {
       {children}
     </section>
   )}
+}
+
+SectionContacts.defaultProps = {
+  title: "Contacts",
+}
+
+SectionContacts.propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.arrayOf(PropTypes.node),
 }
 
 export default SectionContacts;
