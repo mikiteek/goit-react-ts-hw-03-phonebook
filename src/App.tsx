@@ -5,7 +5,18 @@ import SectionContacts from "./components/SectionContacts/SectionContacts";
 import Filter from "./components/Filter/Filter";
 import ContactList from "./components/ContactList/ContactList";
 
-class App extends Component {
+interface contactTypes {
+  id: string,
+  name: string,
+  number: string,
+}
+
+interface stateTypes {
+  contacts: contactTypes[],
+  filter: string,
+}
+
+class App extends Component<{}, stateTypes> {
   state = {
     contacts: [
       {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
@@ -15,20 +26,20 @@ class App extends Component {
     ],
     filter: "",
   };
-  componentDidUpdate(prevProps, prevState) {
-    const contacts = this.state.contacts;
+  componentDidUpdate(prevProps: any, prevState: stateTypes): void {
+    const {contacts} = this.state;
     if (prevState.contacts !== contacts) {
       localStorage.setItem("contacts", JSON.stringify(contacts));
     }
   }
-  componentDidMount() {
+  componentDidMount(): void {
     const contactsLocalStorage = localStorage.getItem("contacts");
     if (contactsLocalStorage) {
       this.setState({contacts: JSON.parse(contactsLocalStorage)});
     }
   }
 
-  addContact = contact => {
+  private addContact = (contact: contactTypes): void => {
     const {name, number} = contact;
     if (name === "" || number === "")
       return;
@@ -36,7 +47,7 @@ class App extends Component {
       alert(`${name} is already in contacts.`);
       return;
     }
-    const contactNew = {
+    const contactNew: contactTypes = {
       id: uuid(),
       name,
       number,
@@ -46,14 +57,14 @@ class App extends Component {
     }));
   };
 
-  getVisibleContacts = () => {
+  private getVisibleContacts = (): contactTypes[] => {
     const {filter, contacts} = this.state;
     return contacts.filter(({name}) => name.toLowerCase().includes(filter.toLowerCase()));
   }
-  changeFilter = event => {
+  private changeFilter = (event: any): void => {
     this.setState({filter: event.target.value});
   }
-  deleteContact = idContact => {
+  private deleteContact = (idContact: string): void => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(({id}) => id !== idContact),
     }));
@@ -68,7 +79,6 @@ class App extends Component {
           <Filter onChangeFilter={this.changeFilter}/>
           <ContactList contacts={contacts} onDeleteContact={this.deleteContact}/>
         </SectionContacts>
-
       </div>
     );
   }
