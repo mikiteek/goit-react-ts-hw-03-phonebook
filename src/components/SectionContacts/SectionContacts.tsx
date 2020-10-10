@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 interface propTypes {
   title: string,
-  children: Component[],
+  children: any,
 }
 
 class SectionContacts extends Component<propTypes> {
